@@ -21,7 +21,7 @@ exam_cidr() {
           print "1"; 
         else 
           print "0"}')
-    # проверяем маску 
+    # проверяем маску
     flag_mask=$(echo $mask | awk -F "." \
         '{if ( NF != 4 && NF != 1) 
           print "0"; 
