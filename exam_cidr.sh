@@ -4,6 +4,7 @@ DIALOG=${DIALOG=dialog}
 
 #функция проверки адреса
 exam_cidr() {
+    # разбиваем на две части
     ip=$(echo $cidr | awk -F "/" \
         '{
          print $1
@@ -12,6 +13,7 @@ exam_cidr() {
         '{
          print $2
       }')
+    # проверяем ip
     flag_ip=$(echo $ip | awk -F "." \
         '{if ( NF != 4) 
           print "0"; 
@@ -19,6 +21,7 @@ exam_cidr() {
           print "1"; 
         else 
           print "0"}')
+    # проверяем маску 
     flag_mask=$(echo $mask | awk -F "." \
         '{if ( NF != 4 && NF != 1) 
           print "0"; 
@@ -31,6 +34,7 @@ exam_cidr() {
         else 
           print "0"
       }')
+    # если обе проверки прошли, то будет 2
     result=$(($flag_ip + $flag_mask))
 }
 
@@ -55,7 +59,7 @@ repeat_func() {
     tempfile=$(mktemp 2>/dev/null) || tempfile=/tmp/test$$
     trap "rm -f $tempfile" 0 1 2 5 15
     $DIALOG --title "CIDR" --clear \
-        --menu "Выберите дальнейшее действие" 10 40 4 \
+        --menu "Выберите дальнейшее действие" 10 40 2 \
         "1." "Повторить" \
         "2." "Выход" 2>$tempfile
     choice=$(cat $tempfile)
