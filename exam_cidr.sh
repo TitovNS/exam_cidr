@@ -56,13 +56,12 @@ exit_func() {
 }
 # предложение дальнейшего действия
 repeat_func() {
-    tempfile=$(mktemp 2>/dev/null) || tempfile=/tmp/test$$
-    trap "rm -f $tempfile" 0 1 2 5 15
-    $DIALOG --title "CIDR" --clear \
+
+    choice=$($DIALOG --title "CIDR" --clear \
         --menu "Выберите дальнейшее действие" 10 40 2 \
         "1." "Повторить" \
-        "2." "Выход" 2>$tempfile
-    choice=$(cat $tempfile)
+        "2." "Выход" \
+        3>&1 1>&2 2>&3 3>&-)
     case $? in
     0)
         if [ "$choice" = "2." ]; then
